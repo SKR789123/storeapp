@@ -12,6 +12,7 @@ const LoginPage = () => {
     const {setUser} = useContext(LoginContext)
 
     const Login = () =>{
+        
         setUser('saa')
     }
 
