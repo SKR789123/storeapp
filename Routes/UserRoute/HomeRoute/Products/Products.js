@@ -9,7 +9,7 @@ const Products = ({navigation}) => {
     <View>
         <AppHeader title='Products' />
 
-        <ProductList />
+        <ProductList navigation={navigation} />
       
       
     </View>

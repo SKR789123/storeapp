@@ -2,27 +2,12 @@ import { View, Text,FlatList, TouchableOpacity,Image,StyleSheet } from 'react-na
 import React from 'react'
 import useFetchProducts from '../../CustomHooks/useFetchProducts';
 
-const ProductList = () => {
+const ProductList = ({navigation}) => {
 
     const [data] = useFetchProducts("https://dummyjson.com/products");
 
-// const Item = ({ item, onPress, backgroundColor, textColor }) => (
-//     <TouchableOpacity style={styles.product}>
-//         <Text style={styles.itemTitle}>{item.title}</Text>
-//         <Text style={styles.itemDescription}>{item.description}</Text>
-//         <Image
-//         style={styles.thumbnail}
-//         source={{
-//           uri: item.thumbnail,
-//         }}
-//       />
-//     </TouchableOpacity>
-// ); 
-
-const renderItem = ({ item }) => {
-
-    return (
-        <TouchableOpacity style={styles.product}>
+const Item = ({ item}) => (
+    <TouchableOpacity style={styles.product} onPress={()=>navigation.push('ProductInformation')}>
         <Text style={styles.itemTitle}>{item.title}</Text>
         <Text style={styles.itemDescription}>{item.description}</Text>
         <Image
@@ -32,6 +17,14 @@ const renderItem = ({ item }) => {
         }}
       />
     </TouchableOpacity>
+); 
+
+const renderItem = ({ item }) => {
+
+    return (
+        <Item
+        item={item}
+      /> 
     );
   };
 

@@ -12,7 +12,7 @@ import {LoginContext} from './Contexts/LoginContext'
 const RootStack = createNativeStackNavigator();
 const RootStackScreen = ({ userToken }) => (
   <RootStack.Navigator screenOptions={{animation: 'fade',headerShown:false}}>
-    {userToken ? (
+    {!userToken ? (
       <RootStack.Screen
         name="App"
         component={UserRoute}
