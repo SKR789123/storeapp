@@ -4,7 +4,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 const AppHeader = ({title,navigation}) => {
 
-  if(title=='Products'){
+  if(title=='Products' || title=='Cart'){
     return (
         <View style={styles.headerWrapper1}>
             <SafeAreaView></SafeAreaView>
@@ -31,11 +31,12 @@ const styles = StyleSheet.create({
         alignItems:'center',
         borderBottomWidth:1,
         borderBottomColor:'gray',
-        paddingVertical:20
+        paddingVertical:'5%'
     },
     headerWrapper2:{
         alignItems:'flex-start',
-        paddingVertical:20
+        paddingVertical:'5%',
+        // paddingVertical:20,
     },
     headerText:{
         fontSize:20

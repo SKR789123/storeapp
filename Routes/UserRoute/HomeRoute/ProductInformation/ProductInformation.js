@@ -32,7 +32,8 @@ const ProductInformation = ({navigation,route}) => {
         id:item.id,
         title:item.title,
         quantity:quantity,
-        price:item.price*quantity
+        price:item.price*quantity,
+        thumbnail:item.thumbnail
       }
 
       let cartdata
@@ -143,12 +144,12 @@ const ProductInformation = ({navigation,route}) => {
           <AppButton title={`Add to Cart (${quantity})`} 
           action={addToCart} 
           />
-          {/* <AppButton title={`Delete Cart (${quantity})`} 
+          <AppButton title={`Delete Cart (${quantity})`} 
           action={deleteCart} 
           />
           <AppButton title={`Get Data `} 
           action={getCartData} 
-          /> */}
+          />
           </View>
           
         </ScrollView>
