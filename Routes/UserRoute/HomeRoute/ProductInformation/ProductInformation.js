@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity,Image, Dimensions } from 'react-native'
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity,Image, Dimensions,Alert } from 'react-native'
 import React,{useState,useRef} from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -6,50 +6,87 @@ import AppHeader from '../../../../Components/AppHeader'
 import Carousel from '../../../../Components/Carousel';
 
 import StarRating from '../../../../Components/StarRating';
+import Slider from '@react-native-community/slider';
+import AppButton from '../../../../Components/AppButton';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Helpers from '../../../../Helpers/Helpers';
 
 // const WIDTH = Dimensions.get('window').width;
 
 const ProductInformation = ({navigation,route}) => {
 
   const {item} = route.params
-  // console.log(item.images)
 
-  // const [activeimage, setActiveimage] = useState(0)
-  // const scrollRef = useRef();
-
-
-  // 1 - 0
-  // 2 - WIDTH
-  // 3 - WIDTH*2
-
-  // const previous = () =>{
-  //   // scrollRef.current.scrollTo({ x: 0, y: 0, animated: true })
-  //   // scrollToEnd({ animated: true })
-  //   scrollRef.current.scrollTo({
-  //     x: (activeimage-1)*WIDTH, y: 0, animated: true
-  //   });
-  // }
-
-  // const next = () =>{
-  //   // scrollRef.current.scrollTo({ x: 0, y: 0, animated: true })
-  //   // scrollToEnd({ animated: true })
-  //   scrollRef.current.scrollTo({
-  //     x: (activeimage+1)*WIDTH, y: 0, animated: true
-  //   });
-  // }
-
-  // const onchange = (nativeEvent)=>{
-
-  //   if(nativeEvent){
-  //     const slide = Math.ceil(nativeEvent.contentOffset.x/nativeEvent.layoutMeasurement.width)
-  //     if(slide != activeimage){
-  //       setActiveimage(slide)
-  //     }
-  //   }
-
-  // }
+  const [quantity, setQuantity] = useState(1)
+  const sliderRef = useRef()
+  const maximum = 10
+  const minimum = 1
 
 
+
+  const addToCart = async() =>{
+    try {
+
+      const data = {
+        id:item.id,
+        title:item.title,
+        quantity:quantity,
+        price:item.price*quantity
+      }
+
+      let cartdata
+
+      const existingCart = await AsyncStorage.getItem('@cartdata')
+
+      if(existingCart){
+          let existingCartObject = JSON.parse(existingCart)
+          const itemExists = existingCartObject.filter(cartitem=>{
+            return cartitem.id == item.id
+          }).length
+          
+          if(itemExists){
+            Alert.alert('Item already exists in cart')
+            return;
+          }
+          existingCartObject.push(data)
+          cartdata =  JSON.stringify(existingCartObject)
+          await AsyncStorage.setItem('@cartdata', cartdata)
+          Alert.alert('Item added to existing cart')
+          
+      }
+      else{
+        cartdata =  JSON.stringify([data])
+        await AsyncStorage.setItem('@cartdata', cartdata)
+        Alert.alert('Item added to new cart')
+      }
+      
+      
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const getCartData = async () =>{
+
+    try {
+      const jsonValue = await AsyncStorage.getItem('@cartdata')
+      console.log(jsonValue)
+    } catch(e) {
+      console.log(e)
+    }
+
+  }
+
+
+  const deleteCart = async() =>{
+    try {
+      const jsonValue = await AsyncStorage.removeItem('@cartdata')
+      console.log(jsonValue)
+    } catch(e) {
+      console.log(e)
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -57,34 +94,6 @@ const ProductInformation = ({navigation,route}) => {
         
         <ScrollView>
 
-          {/* <ScrollView
-          scrollEventThrottle={16}
-          ref={scrollRef}
-          onScroll={({nativeEvent})=>onchange(nativeEvent)}
-          showsHorizontalScrollIndicator={false}
-          pagingEnabled
-          horizontal
-          style={styles.wrap}
-          >
-            {item.images.map((e,index)=>{
-              return(
-                <Image 
-              key={e} 
-              // resizeMode='contain' 
-              style={styles.wrap}
-              source={{uri:e}}
-              />
-              )
-            })}
-
-          </ScrollView> */}
-
-            {/* <TouchableOpacity onPress={()=>previous()}>
-              <Text>Back</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={()=>next()}>
-              <Text>Forward</Text>
-            </TouchableOpacity> */}
           <Carousel images={item.images} />
 
           <View style={styles.infoWrapper}>
@@ -100,7 +109,46 @@ const ProductInformation = ({navigation,route}) => {
               <Text style={styles.itemRatingText}>Feedback</Text>
               <StarRating rating={item.rating} />
             </View>
+
+            <View style={styles.quantityWrapper}>
+
+              <Text style={styles.quantityText}>Quantity</Text>
+
+              <View style={styles.sliderWrapper}>
+                <Text style={styles.sliderSideAmount}>{minimum}</Text>
+                <Slider
+                  style={{width: 200, height: 40}}
+                  step={1}
+                  ref={sliderRef}
+                  tapToSeek
+                  onValueChange={value=>setQuantity(value)}
+                  minimumValue={minimum}
+                  maximumValue={maximum}
+                  minimumTrackTintColor="#645cfc"
+                  thumbTintColor="#645cfc"
+                  maximumTrackTintColor="#DCDCDC"
+                />
+                <Text style={styles.sliderSideAmount}>{maximum}</Text>
+              </View>
+
+            </View>
             
+
+            
+
+          </View>
+
+          <View style={styles.pageButtonWrapper}>
+
+          <AppButton title={`Add to Cart (${quantity})`} 
+          action={addToCart} 
+          />
+          {/* <AppButton title={`Delete Cart (${quantity})`} 
+          action={deleteCart} 
+          />
+          <AppButton title={`Get Data `} 
+          action={getCartData} 
+          /> */}
           </View>
           
         </ScrollView>
@@ -144,6 +192,24 @@ const styles = StyleSheet.create({
     },
     itemRatingText:{
 
+    },
+    quantityWrapper:{
+      marginTop:30,
+      alignItems:'center'
+    },
+    quantityText:{
+
+    },
+    sliderWrapper:{
+      flexDirection:'row',
+      alignItems:'center',
+      justifyContent:'center'
+    },
+    sliderSideAmount:{
+
+    },
+    pageButtonWrapper:{
+      marginVertical:'20%'
     },
 })
 
