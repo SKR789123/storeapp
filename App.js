@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, Alert } from 'react-native'
 import React,{useState,useEffect,useMemo} from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -8,11 +8,12 @@ import GuestRoute from './Routes/GuestRoute';
 import UserRoute from './Routes/UserRoute';
 
 import {LoginContext} from './Contexts/LoginContext'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const RootStack = createNativeStackNavigator();
 const RootStackScreen = ({ userToken }) => (
   <RootStack.Navigator screenOptions={{animation: 'fade',headerShown:false}}>
-    {!userToken ? (
+    {userToken ? (
       <RootStack.Screen
         name="App"
         component={UserRoute}
@@ -40,13 +41,33 @@ export default function App() {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState(false);
 
+  const authState = async() =>{
+
+    try {
+      const user = await AsyncStorage.getItem('@user')
+      if(user){
+        const userObject = JSON.parse(user)
+        setUser(userObject)
+        if (initializing) setInitializing(false);
+        return
+      }
+      if (initializing) setInitializing(false);
+
+    } catch(e) {
+      Alert.alert(e.message)
+    }
+
+
+  }
+
   useEffect(()=>{
 
-    // if (initializing) setInitializing(false);
+    authState()
 
-   setTimeout(()=>{
-    if (initializing) setInitializing(false);
-   },2000)
+  //  setTimeout(()=>{
+  //    if (initializing) setInitializing(false);
+  //    authState()
+  //  },2000)
 
   },[])
 
@@ -54,7 +75,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <LoginContext.Provider value={{setUser}}>
+      <LoginContext.Provider value={{setUser,user}}>
       <RootStackScreen userToken={user} />
       </LoginContext.Provider>
     </NavigationContainer>
