@@ -7,7 +7,7 @@ const ProductList = ({navigation}) => {
     const [data] = useFetchProducts("https://dummyjson.com/products");
 
 const Item = ({ item}) => (
-    <TouchableOpacity style={styles.product} onPress={()=>navigation.push('ProductInformation')}>
+    <TouchableOpacity style={styles.product} onPress={()=>navigation.push('ProductInformation',{item})}>
         <Text style={styles.itemTitle}>{item.title}</Text>
         <Text style={styles.itemDescription}>{item.description}</Text>
         <Image
