@@ -5,48 +5,49 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import AppHeader from '../../../../Components/AppHeader'
 import Carousel from '../../../../Components/Carousel';
 
-const WIDTH = Dimensions.get('window').width;
-const HEIGHT = Dimensions.get('window').height;
+import StarRating from '../../../../Components/StarRating';
+
+// const WIDTH = Dimensions.get('window').width;
 
 const ProductInformation = ({navigation,route}) => {
 
   const {item} = route.params
   // console.log(item.images)
 
-  const [activeimage, setActiveimage] = useState(0)
-  const scrollRef = useRef();
+  // const [activeimage, setActiveimage] = useState(0)
+  // const scrollRef = useRef();
 
 
   // 1 - 0
   // 2 - WIDTH
   // 3 - WIDTH*2
 
-  const previous = () =>{
-    // scrollRef.current.scrollTo({ x: 0, y: 0, animated: true })
-    // scrollToEnd({ animated: true })
-    scrollRef.current.scrollTo({
-      x: (activeimage-1)*WIDTH, y: 0, animated: true
-    });
-  }
+  // const previous = () =>{
+  //   // scrollRef.current.scrollTo({ x: 0, y: 0, animated: true })
+  //   // scrollToEnd({ animated: true })
+  //   scrollRef.current.scrollTo({
+  //     x: (activeimage-1)*WIDTH, y: 0, animated: true
+  //   });
+  // }
 
-  const next = () =>{
-    // scrollRef.current.scrollTo({ x: 0, y: 0, animated: true })
-    // scrollToEnd({ animated: true })
-    scrollRef.current.scrollTo({
-      x: (activeimage+1)*WIDTH, y: 0, animated: true
-    });
-  }
+  // const next = () =>{
+  //   // scrollRef.current.scrollTo({ x: 0, y: 0, animated: true })
+  //   // scrollToEnd({ animated: true })
+  //   scrollRef.current.scrollTo({
+  //     x: (activeimage+1)*WIDTH, y: 0, animated: true
+  //   });
+  // }
 
-  const onchange = (nativeEvent)=>{
+  // const onchange = (nativeEvent)=>{
 
-    if(nativeEvent){
-      const slide = Math.ceil(nativeEvent.contentOffset.x/nativeEvent.layoutMeasurement.width)
-      if(slide != activeimage){
-        setActiveimage(slide)
-      }
-    }
+  //   if(nativeEvent){
+  //     const slide = Math.ceil(nativeEvent.contentOffset.x/nativeEvent.layoutMeasurement.width)
+  //     if(slide != activeimage){
+  //       setActiveimage(slide)
+  //     }
+  //   }
 
-  }
+  // }
 
 
 
@@ -94,6 +95,12 @@ const ProductInformation = ({navigation,route}) => {
             <Text style={styles.itemPriceText}>Price</Text>
             <Text style={styles.itemPriceValue}>{item.price}$</Text>
             </View>
+            
+            <View style={styles.itemRatingsWrapper}>
+              <Text style={styles.itemRatingText}>Feedback</Text>
+              <StarRating rating={item.rating} />
+            </View>
+            
           </View>
           
         </ScrollView>
@@ -127,6 +134,15 @@ const styles = StyleSheet.create({
 
     },
     itemPriceValue:{
+
+    },
+    itemRatingsWrapper:{
+      marginTop:10,
+      flexDirection:'row',
+      justifyContent:'space-between',
+      alignItems:'center'
+    },
+    itemRatingText:{
 
     },
 })
