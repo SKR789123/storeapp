@@ -1,13 +1,36 @@
-import { View, Text,FlatList, TouchableOpacity,Image,StyleSheet } from 'react-native'
-import React from 'react'
+import { View, Text,FlatList, TouchableOpacity,Image,StyleSheet, Alert } from 'react-native'
+import React,{useState} from 'react'
 import useFetchCart from '../../CustomHooks/useFetchCart';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const CartItemsList = ({navigation}) => {
+const CartItemsList = ({navigation,data}) => {
 
-    const [data] = useFetchCart('@cartdata');
+    // const [data] = useFetchCart('@cartdata');
     // console.log(data) 
 
-const Item = ({ item}) => (
+  const deleteItem = async(id) =>{
+    // let listItemsCopy = [...listItems]
+    const modifiedCart = data.filter(item=>{
+      return item.id != id
+    })
+    try {
+
+      if(data.length == 1){
+        await AsyncStorage.removeItem('@cartdata')
+        return
+      }
+      const newCartData = JSON.stringify(modifiedCart)
+      await AsyncStorage.setItem('@cartdata', newCartData)
+      testData = modifiedCart
+      Alert.alert('Item deleted from cart')
+    } catch (e) {
+      Alert.alert(e.message)
+      
+    }
+
+  }
+
+const Item = ({ item},index) => (
     <View style={styles.cartItemWrapper} onPress={()=>navigation.push('ProductInformation',{item})}>
 
         <View style={styles.thumbnailWrapper}>
@@ -26,7 +49,8 @@ const Item = ({ item}) => (
 
           <View style={styles.cartItemMiddleSecondRowWrapper}>
             <Text style={styles.itemQuantityText}>{`Quantity ${item.quantity}`}</Text>
-            <TouchableOpacity style={styles.itemButton}>
+            <TouchableOpacity style={styles.itemButton}
+            onPress={()=>deleteItem(item.id)}>
               <Text style={styles.itemButtonText}>Delete</Text>
             </TouchableOpacity>
           </View>

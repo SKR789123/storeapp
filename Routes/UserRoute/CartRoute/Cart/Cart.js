@@ -4,26 +4,42 @@ import React from 'react'
 import AppHeader from '../../../../Components/AppHeader'
 import AppButton from '../../../../Components/AppButton'
 import CartItemsList from '../../../../Components/CartItemsList/CartItemsList'
+import useFetchCart from '../../../../CustomHooks/useFetchCart'
 
 const Cart = ({navigation}) => {
 
-  const checkout = () =>{
-    navigation.navigate('Checkout')
+  const [data] = useFetchCart('@cartdata')
+
+  const checkout = async() =>{
+    const cartTotal = data?.reduce((currentTotal,item)=>{
+      return currentTotal + item.price
+    },0)
+    navigation.navigate('Checkout',{cartTotal})
   }
 
   return (
     <View style={styles.container}>
       <AppHeader title='Cart' />
 
+      
+
+      {data?
+      <>
       <View style={styles.cartListWrapper}>
-      <CartItemsList />
+      <CartItemsList data={data} />
       </View>
       
       <View style={styles.pageButtonWrapper}>
-      <AppButton title='Checkout' 
-          action={checkout} 
-      />
+        <AppButton title='Checkout' 
+            action={checkout} 
+        />
       </View>
+      </>
+      :
+      <Text style={styles.cartPageText}>Cart is empty</Text>
+      }
+
+
       
 
     </View>
@@ -43,6 +59,10 @@ const styles = StyleSheet.create({
     justifyContent:'flex-end'
 
   },
+  cartPageText:{
+    textAlign:'center',
+    marginTop:'40%'
+  }
 
 })
 
