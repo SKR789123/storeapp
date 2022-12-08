@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Alert } from "react-native";
 
 
 
@@ -66,7 +67,11 @@ const useFetchUser = (url) => {
         setUserdata(userDataObject)
         }
 
-      });
+      })
+      .catch(err=>{
+        setData('empty')
+        Alert.alert(err.message)
+      })
 
       return cleanup = ()=>{
         mounted=false

@@ -1,4 +1,4 @@
-import { View, StyleSheet, ActivityIndicator, Alert } from 'react-native'
+import { View, StyleSheet, ActivityIndicator, Alert, Text } from 'react-native'
 import React,{useContext} from 'react'
 
 import { LoginContext } from '../../../../Contexts/LoginContext'
@@ -35,6 +35,7 @@ const Profile = () => {
     <View style={styles.container}>
 
       {data?
+      data!='empty'?
       <>
        <AppHeader title={`${data.firstName} ${data.lastName}`} />
       <View style={styles.avatarWrapper}>
@@ -55,6 +56,10 @@ const Profile = () => {
         <AppButton title='Logout' action={Logout} />
       </View>
       </>
+      :
+      <View style={styles.emptyList}>
+      <Text>Nothing to be shown</Text>
+    </View>
       :
       <View style={styles.loaderWrapper}>
         <ActivityIndicator size="large" color="#645cfc" />
@@ -88,6 +93,11 @@ const styles = StyleSheet.create({
     justifyContent:'flex-end'
   },
   loaderWrapper:{
+    height:'50%',
+    justifyContent:'center'
+  },
+  emptyList:{
+    alignItems:'center',
     height:'50%',
     justifyContent:'center'
   }
