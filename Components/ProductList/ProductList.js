@@ -1,13 +1,43 @@
-import { View, Text,FlatList, TouchableOpacity,Image,StyleSheet, ActivityIndicator } from 'react-native'
-import React from 'react'
+import { View, Text,FlatList, TouchableOpacity,Image,StyleSheet, ActivityIndicator, Alert } from 'react-native'
+import React,{useEffect,useState,useRef} from 'react'
 import useFetchProducts from '../../CustomHooks/useFetchProducts';
 
 const ProductList = ({navigation}) => {
 
-    const [data] = useFetchProducts("https://dummyjson.com/products");
+    const [currentset, setCurrentset] = useState(0)
+
+    //fetching only the data necessary to render the product list
+    const [data,total] = useFetchProducts(`https://dummyjson.com/products?skip=${currentset}&select=title,description,thumbnail`);
+
+    
+
+const nextPage = () =>{
+
+  if(total-currentset>30){
+    setCurrentset(currentset+30)
+    flatlistref.current.scrollToOffset({ animated: true, offset: 0 });
+    return
+  }
+  setRefreshing(false)
+  Alert.alert('You have reached the end')
+  
+}
+
+const previousPage = () =>{
+  setCurrentset(currentset-30)
+  // flatlistref.current.scrollToEnd({animated: true})
+  // flatlistref.current.scrollToOffset({ animated: true, offset: 0 });
+}
+
+const flatlistref = useRef()
+
+useEffect(()=>{
+
+
+},[currentset])
 
 const Item = ({ item}) => (
-    <TouchableOpacity style={styles.product} onPress={()=>navigation.push('ProductInformation',{item})}>
+    <TouchableOpacity style={styles.product} onPress={()=>navigation.push('ProductInformation',{productId:item.id})}>
         <Text style={styles.itemTitle}>{item.title}</Text>
         <Text style={styles.itemDescription}>{item.description}</Text>
         <Image
@@ -18,6 +48,22 @@ const Item = ({ item}) => (
       />
     </TouchableOpacity>
 ); 
+
+const Footer = () => {
+  return (
+    <TouchableOpacity style={styles.navigationButton} onPress={()=>nextPage()}>
+      <Text>Next Page</Text>
+    </TouchableOpacity>
+  )
+}
+
+const Header = () => {
+  return (
+    <TouchableOpacity style={styles.navigationButton} onPress={()=>previousPage()}>
+      <Text>Previous Page</Text>
+    </TouchableOpacity>
+  )
+}
 
 const renderItem = ({ item }) => {
 
@@ -32,8 +78,11 @@ const renderItem = ({ item }) => {
     <>
     {data? 
     <FlatList
+        ref={flatlistref}
         data={data}
         renderItem={renderItem}
+        ListHeaderComponent={currentset>0?Header:null}
+        ListFooterComponent={Footer}
         keyExtractor={(item) => item.id}
         style={styles.flatlist}
       />
@@ -50,7 +99,7 @@ const styles = StyleSheet.create({
     flatlist:{
         marginHorizontal:20,
         marginTop:20,
-        marginBottom:'40%'
+        marginBottom:'50%'
     },
     product:{
         marginBottom:30
@@ -70,6 +119,9 @@ const styles = StyleSheet.create({
     loaderWrapper:{
       height:'50%',
       justifyContent:'center'
+    },
+    navigationButton:{
+      alignSelf:'center',
     }
   });
 

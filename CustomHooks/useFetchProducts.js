@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 const useFetchProducts = (url) => {
   const [data, setData] = useState(null);
+  const [total, setTotal] = useState(null)
 
 
   useEffect(() => {
@@ -9,10 +10,13 @@ const useFetchProducts = (url) => {
 
     fetch(url)
       .then((res) => res.json())
-      .then((data) => setData(data.products));
+      .then((data) => {
+        setData(data.products)
+        setTotal(data.total)
+      });
   }, [url]);
 
-  return [data];
+  return [data,total];
 };
 
 export default useFetchProducts;
