@@ -15,8 +15,6 @@ import Database from '../../../../Database/Database'
 const Profile = () => {
 
   const {setUser,user} = useContext(LoginContext)
-
-  // const userObject = JSON.parse(user)
   
   const [data,userdata] = useFetchUser(`https://dummyjson.com/users/${user.id}`)
 

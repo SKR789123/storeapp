@@ -51,7 +51,7 @@ const Tabs = createBottomTabNavigator();
 
 const UserRouteTabs = () => (
   <Tabs.Navigator screenOptions={({route}) => ({
-      tabBarIcon: ({focused, color, size , padding}) => {
+      tabBarIcon: ({focused}) => {
         let iconName;
         let iconColor;
         if (route.name==='HomeRoute'){
