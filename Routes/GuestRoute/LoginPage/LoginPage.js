@@ -2,7 +2,6 @@ import { View, Text, StyleSheet, SafeAreaView,ActivityIndicator, Alert, TextInpu
 import React,{useContext,useState} from 'react'
 
 import AppButton from '../../../Components/AppButton'
-import AppTextInput from '../../../Components/AppTextInput'
 
 import Database from '../../../Database/Database';
 import { LoginContext } from '../../../Contexts/LoginContext'
@@ -53,7 +52,7 @@ const LoginPage = () => {
           } catch (e) {
             setSubmitting(false)
             Alert.alert(e.message)
-            // saving error
+
           }
         
     }
@@ -70,8 +69,6 @@ const LoginPage = () => {
       </View>
 
       <View style={styles.inputWrapper}>
-          {/* <AppTextInput type='username' secured={false} />
-          <AppTextInput type='password' secured={true} /> */}
           <TextInput
         style={styles.input}
         onChangeText={setUsername}

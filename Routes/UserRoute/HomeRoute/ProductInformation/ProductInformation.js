@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity,Image, Dimensions,Alert, ActivityIndicator } from 'react-native'
-import React,{useState,useRef} from 'react'
+import React,{useState,useRef,useEffect} from 'react'
 
 import AppHeader from '../../../../Components/AppHeader'
 import Carousel from '../../../../Components/Carousel';
@@ -12,8 +12,6 @@ import Database from '../../../../Database/Database';
 
 import useFetchSingleProduct from '../../../../CustomHooks/useFetchSingleProduct';
 
-// const WIDTH = Dimensions.get('window').width;
-
 const ProductInformation = ({navigation,route}) => {
 
 
@@ -21,57 +19,9 @@ const ProductInformation = ({navigation,route}) => {
 
   const [data] = useFetchSingleProduct(`https://dummyjson.com/products/${productId}`)
 
-  
-
   const [quantity, setQuantity] = useState(1)
   const sliderRef = useRef()
-  const maximum = data?.stock
   const minimum = 1
-
-
-
-  // const addToCart = async() =>{
-  //   try {
-
-  //     const data = {
-  //       id:data.id,
-  //       title:data.title,
-  //       quantity:quantity,
-  //       price:data.price*quantity,
-  //       thumbnail:data.thumbnail
-  //     }
-
-  //     let cartdata
-
-  //     const existingCart = await AsyncStorage.getItem('@cartdata')
-
-  //     if(existingCart){
-  //         let existingCartObject = JSON.parse(existingCart)
-  //         const itemExists = existingCartObject.filter(cartitem=>{
-  //           return cartitem.id == data.id
-  //         }).length
-          
-  //         if(itemExists){
-  //           Alert.alert('data already exists in cart')
-  //           return;
-  //         }
-  //         existingCartObject.push(data)
-  //         cartdata =  JSON.stringify(existingCartObject)
-  //         await AsyncStorage.setItem('@cartdata', cartdata)
-  //         Alert.alert('data added to existing cart')
-          
-  //     }
-  //     else{
-  //       cartdata =  JSON.stringify([data])
-  //       await AsyncStorage.setItem('@cartdata', cartdata)
-  //       Alert.alert('Item added to new cart')
-  //     }
-      
-      
-  //   } catch (e) {
-  //     console.log(e)
-  //   }
-  // }
 
   const addItem = async(id,title,price,thumbnail) =>{
 
@@ -93,26 +43,6 @@ const ProductInformation = ({navigation,route}) => {
 
   }
 
-  // const getCartData = async () =>{
-
-  //   try {
-  //     const jsonValue = await AsyncStorage.getItem('@cartdata')
-  //     console.log(jsonValue)
-  //   } catch(e) {
-  //     console.log(e)
-  //   }
-
-  // }
-
-
-  // const deleteCart = async() =>{
-  //   try {
-  //     const jsonValue = await AsyncStorage.removeItem('@cartdata')
-  //     console.log(jsonValue)
-  //   } catch(e) {
-  //     console.log(e)
-  //   }
-  // }
 
   return (
     <View style={styles.container}>
@@ -151,12 +81,12 @@ const ProductInformation = ({navigation,route}) => {
                 onValueChange={value=>setQuantity(value)}
                 // onSlidingComplete={value=>setQuantity(value)}
                 minimumValue={minimum}
-                maximumValue={maximum}
+                maximumValue={data.stock}
                 minimumTrackTintColor="#645cfc"
                 thumbTintColor="#645cfc"
                 maximumTrackTintColor="#DCDCDC"
               />
-              <Text style={styles.sliderSideAmount}>{maximum}</Text>
+              <Text style={styles.sliderSideAmount}>{data.stock}</Text>
             </View>
 
           </View>
@@ -171,12 +101,6 @@ const ProductInformation = ({navigation,route}) => {
         <AppButton title={`Add to Cart (${quantity})`} 
         action={()=>addItem(data.id,data.title,data.price,data.thumbnail)} 
         />
-        {/* <AppButton title={`Delete Cart (${quantity})`} 
-        action={deleteCart} 
-        />
-        <AppButton title={`Get Data `} 
-        action={getCartData} 
-        /> */}
         </View>
         
       </ScrollView>

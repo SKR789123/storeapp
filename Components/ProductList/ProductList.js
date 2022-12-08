@@ -13,6 +13,7 @@ const ProductList = ({navigation}) => {
 
 const nextPage = () =>{
 
+  //check for end of products list api
   if(total-currentset>30){
     setCurrentset(currentset+30)
     flatlistref.current.scrollToOffset({ animated: true, offset: 0 });
@@ -26,11 +27,12 @@ const nextPage = () =>{
 const previousPage = () =>{
   setCurrentset(currentset-30)
   // flatlistref.current.scrollToEnd({animated: true})
-  // flatlistref.current.scrollToOffset({ animated: true, offset: 0 });
 }
 
 const flatlistref = useRef()
 
+
+//re-render on going next/previous
 useEffect(()=>{
 
 
