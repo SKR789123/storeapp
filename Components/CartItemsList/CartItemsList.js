@@ -3,13 +3,22 @@ import React,{useState,useCallback} from 'react'
 
 import { useFocusEffect } from '@react-navigation/native';
 import Database from '../../Database/Database';
+import AppButton from '../AppButton';
 
 const CartItemsList = ({navigation}) => {
 
-    // const [data] = useFetchCart('@cartdata');
-    // console.log(data) 
 
     const [cartdata, setCartdata] = useState(null)
+
+    const checkout = async() =>{
+      try{
+        const cartTotal = await Database.getCartTotal('@cartdata')
+        navigation.navigate('Checkout',{cartTotal})
+      }
+      catch(err){
+        Alert.alert(err.message)
+      }
+    }
 
     const getCartItems = async () => {
       try {
@@ -35,7 +44,7 @@ const CartItemsList = ({navigation}) => {
           const removeData = await Database.emptyCart('@cartdata',modifiedCart)
           Alert.alert('Cart cleared')
           setCartdata(null)
-          navigation.navigate('HomeRoute')
+          // navigation.navigate('HomeRoute')
           return
         }
         let cardDataCopy = [...cartdata]
@@ -144,14 +153,25 @@ const ItemSeperatorView = ()=>{
 }
   return (
     <>
-    {cartdata && 
-    <FlatList
-        data={cartdata}
-        renderItem={renderItem}
-        ItemSeparatorComponent={ItemSeperatorView}
-        keyExtractor={(item) => item.id}
-        style={styles.flatlist}
-      />
+    {cartdata? 
+    <>
+    <View style={styles.cartListWrapper}>
+      <FlatList
+          data={cartdata}
+          renderItem={renderItem}
+          ItemSeparatorComponent={ItemSeperatorView}
+          keyExtractor={(item) => item.id}
+          style={styles.flatlist}
+        />
+    </View>
+    <View style={styles.pageButtonWrapper}>
+        <AppButton title='Checkout' 
+            action={checkout} 
+        />
+    </View>
+    </>
+    :
+    <Text style={styles.cartPageText}>Cart is empty</Text>
     }
     </>
   )
@@ -212,6 +232,17 @@ const styles = StyleSheet.create({
       textAlign:'right',
       fontSize:18
     },
+    cartListWrapper:{
+    height:'65%'
+    },
+    pageButtonWrapper:{
+      height:'10%',
+      justifyContent:'flex-end'
+    },
+    cartPageText:{
+      textAlign:'center',
+      marginTop:'40%'
+    }
 
   });
 
