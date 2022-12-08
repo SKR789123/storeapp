@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, SafeAreaView,ActivityIndicator, Alert } from 'react-native'
+import { View, Text, StyleSheet, SafeAreaView,ActivityIndicator, Alert, TextInput } from 'react-native'
 import React,{useContext,useState} from 'react'
 
 import AppButton from '../../../Components/AppButton'
@@ -13,7 +13,19 @@ const LoginPage = () => {
 
     const [submitting, setSubmitting] = useState(false)
 
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+
     const Login = async() =>{
+        
+        if(username == ''){
+          Alert.alert(`Username can't be empty`)
+          return
+        }
+        if(password == ''){
+          Alert.alert(`Password can't be empty`)
+          return
+        }
         setSubmitting(true)
         try {
             const submitCredentials = await fetch('https://dummyjson.com/auth/login', {
@@ -21,13 +33,19 @@ const LoginPage = () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                   
-                  username: 'kminchelle',
-                  password: '0lelplR',
-                  // expiresInMins: 60, // optional
+                  username: username,
+                  password: password,
+                  // username: 'kminchelle',
+                  // password: '0lelplR',
                 })
               })
 
             const userData = await submitCredentials.json()
+            if(userData.message){
+              setSubmitting(false)
+              Alert.alert(userData.message)
+              return
+            }
             const jsonValue = JSON.stringify(userData)
             const addUserData = await Database.setUserData('@user',jsonValue)
             setSubmitting(false)
@@ -52,8 +70,22 @@ const LoginPage = () => {
       </View>
 
       <View style={styles.inputWrapper}>
-          <AppTextInput type='username' secured={false} />
-          <AppTextInput type='password' secured={true} />
+          {/* <AppTextInput type='username' secured={false} />
+          <AppTextInput type='password' secured={true} /> */}
+          <TextInput
+        style={styles.input}
+        onChangeText={setUsername}
+        value={username}
+        placeholder={'username'}
+      />
+
+      <TextInput
+        style={styles.input}
+        onChangeText={setPassword}
+        value={password}
+        placeholder={'password'}
+        secureTextEntry={true}
+      />
       </View>
 
 
@@ -79,6 +111,14 @@ const styles = StyleSheet.create({
     },
     inputWrapper:{
         marginTop:'20%'
+    },
+    input: {
+      height: 40,
+      marginHorizontal: 20,
+      marginBottom:20,
+      borderWidth: 1,
+      borderColor:'gray',
+      padding: 10,
     },
 
 })
