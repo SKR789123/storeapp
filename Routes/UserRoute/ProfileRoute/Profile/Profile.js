@@ -18,52 +18,8 @@ const Profile = () => {
 
   // const userObject = JSON.parse(user)
   
-  const [data] = useFetchUser(`https://dummyjson.com/users/${user.id}`)
+  const [data,userdata] = useFetchUser(`https://dummyjson.com/users/${user.id}`)
 
-  const userData = [
-    {
-      id:1,
-      iconName:'cake',
-      title:'Birth date',
-      value:data?.birthDate
-    },
-    {
-      id:2,
-      iconName:data?.gender=='male'?'gender-male':'gender-female',
-      title:'',
-      value:data?.gender.charAt(0).toUpperCase() + data?.gender.slice(1)
-    },
-    {
-      id:3,
-      iconName:'phone',
-      title:'Contact',
-      value:data?.phone
-    },
-    {
-      id:4,
-      iconName:'school',
-      title:'Studies at',
-      value:data?.university
-    },
-    {
-      id:5,
-      iconName:'map-marker-minus',
-      title:'From',
-      value:data?.address.city
-    },
-    {
-      id:6,
-      iconName:'bank',
-      title:'Work at',
-      value:data?.company.name
-    },
-    {
-      id:7,
-      iconName:'briefcase-variant',
-      title:'Work as a',
-      value:data?.company.title
-    },
-  ]
 
   const Logout = async() => {
 
@@ -89,7 +45,7 @@ const Profile = () => {
       
       <View style={styles.userInfoWrapper}>
 
-        {userData?.map(user=>{
+        {userdata?.map(user=>{
           return(
             <UserInfoItem key={user.id} iconName={user.iconName}  title={user.title} value={user.value} />
           )
