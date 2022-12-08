@@ -10,7 +10,7 @@ const useFetchProducts = (url) => {
 
     let mounted = true
 
-    fetch('url')
+    fetch(url)
       .then((res) => res.json())
       .then((data) => {
 
