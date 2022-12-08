@@ -64,6 +64,19 @@ const CartItemsList = ({navigation}) => {
 
     }
 
+    const confirmationDialog = (id) =>
+    Alert.alert(
+      "Delete Item",
+      "Are you sure to delete this item?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => removeItem(id) }
+      ]
+    );
+
     // const deleteItem = async(id) =>{
     //   let cardDataCopy = [...cartdata]
     //   const modifiedCart = cardDataCopy.filter(item=>{
@@ -121,7 +134,7 @@ const Item = ({ item},index) => (
           <View style={styles.cartItemMiddleSecondRowWrapper}>
             <Text style={styles.itemQuantityText}>{`Quantity ${item.quantity}`}</Text>
             <TouchableOpacity style={styles.itemButton}
-            onPress={()=>removeItem(item.id)}>
+            onPress={()=>confirmationDialog(item.id)}>
               <Text style={styles.itemButtonText}>Delete</Text>
             </TouchableOpacity>
           </View>
@@ -232,6 +245,7 @@ const styles = StyleSheet.create({
       textAlign:'right',
       fontSize:18
     },
+    //10% height for parent screen header
     cartListWrapper:{
     height:'65%'
     },

@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
-import { Alert } from "react-native";
+
 
 
 const useFetchUser = (url) => {
 
   const [data, setData] = useState(null);
-
-
 
   useEffect(() => {
 
