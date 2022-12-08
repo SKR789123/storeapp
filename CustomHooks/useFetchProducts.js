@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Alert } from "react-native";
 
 const useFetchProducts = (url) => {
   const [data, setData] = useState(null);
@@ -9,7 +10,7 @@ const useFetchProducts = (url) => {
 
     let mounted = true
 
-    fetch(url)
+    fetch('url')
       .then((res) => res.json())
       .then((data) => {
 
@@ -18,7 +19,11 @@ const useFetchProducts = (url) => {
           setTotal(data.total)
         }
         
-      });
+      })
+      .catch(err=>{
+        setData([])
+        Alert.alert(err.message)
+      })
 
       return cleanup = ()=>{
         mounted=false

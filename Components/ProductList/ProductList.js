@@ -80,6 +80,7 @@ const renderItem = useCallback(baseRenderItem,[data])
   return (
     <>
     {data? 
+    data.length>0?
     <FlatList
         ref={flatlistref}
         data={data}
@@ -89,6 +90,10 @@ const renderItem = useCallback(baseRenderItem,[data])
         keyExtractor={(item) => item.id}
         style={styles.flatlist}
       />
+    :
+    <View style={styles.emptyList}>
+      <Text>Nothing to be shown</Text>
+    </View>
     :
     <View style={styles.loaderWrapper}>
         <ActivityIndicator size="large" color="#645cfc" />
@@ -125,6 +130,11 @@ const styles = StyleSheet.create({
     },
     navigationButton:{
       alignSelf:'center',
+    },
+    emptyList:{
+      alignItems:'center',
+      height:'50%',
+      justifyContent:'center'
     }
   });
 
