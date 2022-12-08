@@ -49,6 +49,7 @@ const ProductInformation = ({navigation,route}) => {
         <AppHeader title='ProductInfo' navigation={navigation} />
         
         {data?
+        data != 'empty'?
         <ScrollView>
 
         <Carousel images={data.images} />
@@ -104,6 +105,10 @@ const ProductInformation = ({navigation,route}) => {
         </View>
         
       </ScrollView>
+      :
+      <View style={styles.emptyInfo}>
+        <Text>Nothing to be shown</Text>
+      </View>
       :
       <View style={styles.loaderWrapper}>
         <ActivityIndicator size="large" color="#645cfc" />
@@ -169,6 +174,11 @@ const styles = StyleSheet.create({
       marginVertical:'20%'
     },
     loaderWrapper:{
+      height:'50%',
+      justifyContent:'center'
+    },
+    emptyInfo:{
+      alignItems:'center',
       height:'50%',
       justifyContent:'center'
     }
