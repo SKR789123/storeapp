@@ -61,10 +61,10 @@ const CartItemsList = ({navigation}) => {
 
     }
 
-    const confirmationDialog = (id) =>
+    const confirmationDialog = (id,title) =>
     Alert.alert(
       "Delete Item",
-      "Are you sure to delete this item?",
+      `Are you sure to delete ${title} from the cart?`,
       [
         {
           text: "Cancel",
@@ -108,7 +108,7 @@ const Item = ({ item},index) => (
           <View style={styles.cartItemMiddleSecondRowWrapper}>
             <Text style={styles.itemQuantityText}>{`Quantity ${item.quantity}`}</Text>
             <TouchableOpacity style={styles.itemButton}
-            onPress={()=>confirmationDialog(item.id)}>
+            onPress={()=>confirmationDialog(item.id,item.title)}>
               <Text style={styles.itemButtonText}>Delete</Text>
             </TouchableOpacity>
           </View>
