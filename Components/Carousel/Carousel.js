@@ -35,7 +35,7 @@ const Carousel = ({images}) => {
   return (
     <View style={styles.carouselWrapper}>
   
-        <ControlButton type='previous' action={previous} />
+        <ControlButton disabled={activeimage==0} type='previous' action={previous} />
             <ScrollView
           scrollEventThrottle={16}
           ref={scrollRef}
@@ -57,7 +57,7 @@ const Carousel = ({images}) => {
             })}
 
           </ScrollView>
-          <ControlButton type='next' action={next} />
+          <ControlButton disabled={activeimage+1==images.length} type='next' action={next} />
 
     </View>
   )
