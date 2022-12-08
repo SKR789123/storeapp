@@ -1,5 +1,5 @@
-import { View, Text, Alert } from 'react-native'
-import React,{useState,useEffect,useMemo} from 'react';
+import { Alert,ActivityIndicator, StyleSheet, View, Text } from 'react-native'
+import React,{useState,useEffect} from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -9,6 +9,7 @@ import UserRoute from './Routes/UserRoute';
 
 import {LoginContext} from './Contexts/LoginContext'
 import Database from './Database/Database';
+import AppLoader from './Components/AppLoader';
 
 const RootStack = createNativeStackNavigator();
 const RootStackScreen = ({ user }) => (
@@ -17,20 +18,11 @@ const RootStackScreen = ({ user }) => (
       <RootStack.Screen
         name="App"
         component={UserRoute}
-        
       />
     ) : (
       <RootStack.Screen
         name="Auth"
         component={GuestRoute}
-        // options={{
-        //   animation: 'none',
-        //   headerShown:false,
-        //   transitionSpec: {
-        //     open: TransitionSpecs.TransitionIOSSpec,
-        //     close: TransitionSpecs.TransitionIOSSpec,
-        //   },
-        // }}
       />
     )}
   </RootStack.Navigator>
@@ -67,7 +59,7 @@ export default function App() {
 
   },[])
 
-  if (initializing) return null;
+  if (initializing) return <AppLoader />;
 
   return (
     <NavigationContainer>
@@ -77,3 +69,10 @@ export default function App() {
     </NavigationContainer>
   )
 }
+
+const styles= StyleSheet.create({
+  loaderWrapper:{
+    height:'50%',
+    justifyContent:'center'
+  }
+})
