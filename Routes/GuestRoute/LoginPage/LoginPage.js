@@ -72,6 +72,7 @@ const LoginPage = () => {
           <TextInput
         style={styles.input}
         onChangeText={setUsername}
+        autoCapitalize='none'
         value={username}
         placeholder={'username'}
       />
@@ -80,6 +81,7 @@ const LoginPage = () => {
         style={styles.input}
         onChangeText={setPassword}
         value={password}
+        autoCapitalize='none'
         placeholder={'password'}
         secureTextEntry={true}
       />
