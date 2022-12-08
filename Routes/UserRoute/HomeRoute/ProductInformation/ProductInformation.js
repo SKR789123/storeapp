@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, StyleSheet, Alert, ActivityIndicator } from 'react-native'
-import React,{useState,useRef,useEffect} from 'react'
+import React,{useState,useRef} from 'react'
 
 import AppHeader from '../../../../Components/AppHeader'
 import Carousel from '../../../../Components/Carousel';
