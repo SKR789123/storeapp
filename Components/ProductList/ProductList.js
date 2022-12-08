@@ -1,4 +1,4 @@
-import { View, Text,FlatList, TouchableOpacity,Image,StyleSheet } from 'react-native'
+import { View, Text,FlatList, TouchableOpacity,Image,StyleSheet, ActivityIndicator } from 'react-native'
 import React from 'react'
 import useFetchProducts from '../../CustomHooks/useFetchProducts';
 
@@ -30,13 +30,17 @@ const renderItem = ({ item }) => {
 
   return (
     <>
-    {data && 
+    {data? 
     <FlatList
         data={data}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         style={styles.flatlist}
       />
+    :
+    <View style={styles.loaderWrapper}>
+        <ActivityIndicator size="large" color="#645cfc" />
+      </View>
     }
     </>
   )
@@ -63,6 +67,10 @@ const styles = StyleSheet.create({
       height: 150,
     //   resizeMode:'contain'
     },
+    loaderWrapper:{
+      height:'50%',
+      justifyContent:'center'
+    }
   });
 
 export default ProductList

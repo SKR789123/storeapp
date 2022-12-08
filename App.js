@@ -11,9 +11,9 @@ import {LoginContext} from './Contexts/LoginContext'
 import Database from './Database/Database';
 
 const RootStack = createNativeStackNavigator();
-const RootStackScreen = ({ userToken }) => (
+const RootStackScreen = ({ user }) => (
   <RootStack.Navigator screenOptions={{animation: 'fade',headerShown:false}}>
-    {userToken ? (
+    {user ? (
       <RootStack.Screen
         name="App"
         component={UserRoute}
@@ -53,6 +53,7 @@ export default function App() {
       if (initializing) setInitializing(false);
 
     } catch(e) {
+      if (initializing) setInitializing(false);
       Alert.alert(e.message)
     }
 
@@ -71,7 +72,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <LoginContext.Provider value={{setUser,user}}>
-      <RootStackScreen userToken={user} />
+      <RootStackScreen user={user} />
       </LoginContext.Provider>
     </NavigationContainer>
   )
