@@ -1,5 +1,5 @@
 import { View, Text,FlatList, TouchableOpacity,Image,StyleSheet, ActivityIndicator, Alert } from 'react-native'
-import React,{useEffect,useState,useRef} from 'react'
+import React,{useEffect,useState,useRef, useCallback} from 'react'
 import useFetchProducts from '../../CustomHooks/useFetchProducts';
 
 const ProductList = ({navigation}) => {
@@ -19,7 +19,6 @@ const nextPage = () =>{
     flatlistref.current.scrollToOffset({ animated: true, offset: 0 });
     return
   }
-  setRefreshing(false)
   Alert.alert('You have reached the end')
   
 }
@@ -67,7 +66,7 @@ const Header = () => {
   )
 }
 
-const renderItem = ({ item }) => {
+const baseRenderItem = ({ item }) => {
 
     return (
         <Item
@@ -75,6 +74,8 @@ const renderItem = ({ item }) => {
       /> 
     );
   };
+
+const renderItem = useCallback(baseRenderItem,[data])
 
   return (
     <>
