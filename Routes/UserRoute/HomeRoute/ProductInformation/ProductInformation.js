@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity,Image, Dimensions,Alert, ActivityIndicator } from 'react-native'
+import { View, Text, ScrollView, StyleSheet, Alert, ActivityIndicator } from 'react-native'
 import React,{useState,useRef,useEffect} from 'react'
 
 import AppHeader from '../../../../Components/AppHeader'

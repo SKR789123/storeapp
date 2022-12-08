@@ -1,8 +1,8 @@
-import { View, Text, Image, StyleSheet } from 'react-native'
+import {Image, StyleSheet } from 'react-native'
 import React from 'react'
 
 const Avatar = ({imageurl}) => {
-    // console.log(imageurl)
+
   return (
     <Image style={styles.avatar}
     source={{

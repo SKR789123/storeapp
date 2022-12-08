@@ -1,4 +1,4 @@
-import { View, Text,StyleSheet, ActivityIndicator, Alert } from 'react-native'
+import { View, StyleSheet, ActivityIndicator, Alert } from 'react-native'
 import React,{useContext} from 'react'
 
 import { LoginContext } from '../../../../Contexts/LoginContext'

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Alert } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import React from 'react'
 
 import AppHeader from '../../../../Components/AppHeader'

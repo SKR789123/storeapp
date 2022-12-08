@@ -4,14 +4,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 const AppHeader = ({title,navigation}) => {
 
-//   if(title=='Products' || title=='Cart'){
-//     return (
-        // <View style={styles.headerWrapper1}>
-        //     <SafeAreaView></SafeAreaView>
-        //     <Text style={styles.headerText}>{title}</Text>
-        // </View>
-//       )
-//   }
   if(title=='ProductInfo'){
     return (
         <View style={styles.headerWrapper2}>

@@ -8,6 +8,7 @@ import AppButton from '../../../../Components/AppButton'
 import Database from '../../../../Database/Database'
 
 const Checkout = ({navigation,route}) => {
+  
   const {cartTotal} = route.params
   
   const pay = async() =>{

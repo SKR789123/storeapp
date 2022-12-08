@@ -1,4 +1,4 @@
-import { Alert,ActivityIndicator, StyleSheet, View, Text } from 'react-native'
+import { Alert } from 'react-native'
 import React,{useState,useEffect} from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -69,10 +69,3 @@ export default function App() {
     </NavigationContainer>
   )
 }
-
-const styles= StyleSheet.create({
-  loaderWrapper:{
-    height:'50%',
-    justifyContent:'center'
-  }
-})

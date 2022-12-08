@@ -1,6 +1,5 @@
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity,Image, Dimensions } from 'react-native'
+import { View, ScrollView, StyleSheet,Image, Dimensions } from 'react-native'
 import React,{useState,useRef} from 'react'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ControlButton from './ControlButton';
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
@@ -35,12 +34,9 @@ const Carousel = ({images}) => {
 
   return (
     <View style={styles.carouselWrapper}>
-        {/* <TouchableOpacity style={styles.carouselButton} onPress={()=>previous()}>
-            <MaterialCommunityIcons name={'chevron-left'} size={40} color={'#000'}  />
-        </TouchableOpacity> */}
+  
         <ControlButton type='previous' action={previous} />
             <ScrollView
-            // contentContainerStyle={{alignItems:'center'}}
           scrollEventThrottle={16}
           ref={scrollRef}
           onScroll={({nativeEvent})=>onchange(nativeEvent)}
@@ -62,9 +58,6 @@ const Carousel = ({images}) => {
 
           </ScrollView>
           <ControlButton type='next' action={next} />
-          {/* <TouchableOpacity style={styles.carouselButton} onPress={()=>next()}>
-            <MaterialCommunityIcons name={'chevron-right'} size={40} color={'#000'}  />
-            </TouchableOpacity> */}
 
     </View>
   )
@@ -79,22 +72,12 @@ const styles = StyleSheet.create({
     carousel:{
         width:WIDTH*0.8,
         height:HEIGHT/5,
-        // backgroundColor:'#ffffff90'
     },
     carouselImage:{
         width:WIDTH*0.8,
         height:HEIGHT/5,
         // resizeMode:'contain'
     },
-    // carouselButton:{
-    //     width:'10%',
-    //     alignItems:'center',
-    //     justifyContent:'center'
-    // },
-    // wrap:{
-    //   width:WIDTH,
-    //   height:HEIGHT/4
-    // }
 
 })
 

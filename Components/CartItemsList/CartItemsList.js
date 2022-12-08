@@ -23,10 +23,7 @@ const CartItemsList = ({navigation}) => {
     const getCartItems = async () => {
       try {
         const cartObject = await Database.getCartData('@cartdata');
-        // console.log(typeof jsonValue)
         if (cartObject) {
-          // const cartObject = JSON.parse(jsonValue)
-          // console.log(cartObject)
           setCartdata(cartObject);
           return
         }
@@ -77,29 +74,6 @@ const CartItemsList = ({navigation}) => {
       ]
     );
 
-    // const deleteItem = async(id) =>{
-    //   let cardDataCopy = [...cartdata]
-    //   const modifiedCart = cardDataCopy.filter(item=>{
-    //     return item.id != id
-    //   })
-    //   try {
-  
-    //     if(cartdata.length == 1){
-    //       await AsyncStorage.removeItem('@cartdata')
-    //       setCartdata(null)
-    //       navigation.navigate('HomeRoute')
-    //       return
-    //     }
-    //     const newCartData = JSON.stringify(modifiedCart)
-    //     await AsyncStorage.setItem('@cartdata', newCartData)
-    //     setCartdata(modifiedCart)
-    //     Alert.alert('Item deleted from cart')
-    //   } catch (e) {
-    //     Alert.alert(e.message)
-        
-    //   }
-  
-    // }
 
     useFocusEffect(
 

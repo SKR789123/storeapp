@@ -1,4 +1,4 @@
-import { Button,TouchableOpacity,View,Text,StyleSheet } from "react-native";
+import { TouchableOpacity,Text,StyleSheet } from "react-native";
 const AppButton = ({title, action}) =>{
 
 
@@ -19,12 +19,11 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         height:30,
         borderRadius:5
-        // alignSelf:'center',
-        // width:'60%'
+ 
     },
     buttonText:{
         color:'#fff',
-        // textAlign:'center'
+    
     }
 
 
