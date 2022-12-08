@@ -5,7 +5,7 @@ import AppHeader from '../../../../Components/AppHeader'
 import AppRadioIcon from '../../../../Components/AppRadioIcon'
 import AppButton from '../../../../Components/AppButton'
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import Database from '../../../../Database/Database'
 
 const Checkout = ({navigation,route}) => {
   const {cartTotal} = route.params
@@ -13,12 +13,12 @@ const Checkout = ({navigation,route}) => {
   const pay = async() =>{
 
     try {
-      const deleteCart = await AsyncStorage.removeItem('@cartdata')
+      const deleteCart = await Database.emptyCart('@cartdata')
       navigation.pop()
       navigation.navigate('HomeRoute')
       Alert.alert('Payment Successfull!')
 
-    } catch(e) {
+    } catch(err) {
       Alert.alert(err.message)
     }
 

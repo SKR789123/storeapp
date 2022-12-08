@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Helpers from "../Helpers/Helpers";
 
 const useFetchProducts = (url) => {
   const [data, setData] = useState(null);

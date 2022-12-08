@@ -1,34 +1,96 @@
 import { View, Text,FlatList, TouchableOpacity,Image,StyleSheet, Alert } from 'react-native'
-import React,{useState} from 'react'
-import useFetchCart from '../../CustomHooks/useFetchCart';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React,{useState,useCallback} from 'react'
 
-const CartItemsList = ({navigation,data}) => {
+import { useFocusEffect } from '@react-navigation/native';
+import Database from '../../Database/Database';
+
+const CartItemsList = ({navigation}) => {
 
     // const [data] = useFetchCart('@cartdata');
     // console.log(data) 
 
-  const deleteItem = async(id) =>{
-    // let listItemsCopy = [...listItems]
-    const modifiedCart = data.filter(item=>{
-      return item.id != id
-    })
-    try {
+    const [cartdata, setCartdata] = useState(null)
 
-      if(data.length == 1){
-        await AsyncStorage.removeItem('@cartdata')
-        return
+    const getCartItems = async () => {
+      try {
+        const cartObject = await Database.getCartData('@cartdata');
+        // console.log(typeof jsonValue)
+        if (cartObject) {
+          // const cartObject = JSON.parse(jsonValue)
+          // console.log(cartObject)
+          setCartdata(cartObject);
+          return
+        }
+      } catch (error) {
+        Alert.alert(error.message)
       }
-      const newCartData = JSON.stringify(modifiedCart)
-      await AsyncStorage.setItem('@cartdata', newCartData)
-      testData = modifiedCart
-      Alert.alert('Item deleted from cart')
-    } catch (e) {
-      Alert.alert(e.message)
+    };
+
+    const removeItem = async(id) =>{
+
       
+
+      try{
+        if(cartdata.length==1){
+          const removeData = await Database.emptyCart('@cartdata',modifiedCart)
+          Alert.alert('Cart cleared')
+          setCartdata(null)
+          navigation.navigate('HomeRoute')
+          return
+        }
+        let cardDataCopy = [...cartdata]
+        const modifiedCart = cardDataCopy.filter(item=>{
+          return item.id != id
+        })
+        const newCartData = JSON.stringify(modifiedCart)
+        const removeData = await Database.removeFromCart('@cartdata',newCartData)
+        setCartdata(modifiedCart)
+        Alert.alert(removeData)
+
+
+      }
+      catch(err){
+        Alert.alert(err.message)
+      }
+
     }
 
-  }
+    // const deleteItem = async(id) =>{
+    //   let cardDataCopy = [...cartdata]
+    //   const modifiedCart = cardDataCopy.filter(item=>{
+    //     return item.id != id
+    //   })
+    //   try {
+  
+    //     if(cartdata.length == 1){
+    //       await AsyncStorage.removeItem('@cartdata')
+    //       setCartdata(null)
+    //       navigation.navigate('HomeRoute')
+    //       return
+    //     }
+    //     const newCartData = JSON.stringify(modifiedCart)
+    //     await AsyncStorage.setItem('@cartdata', newCartData)
+    //     setCartdata(modifiedCart)
+    //     Alert.alert('Item deleted from cart')
+    //   } catch (e) {
+    //     Alert.alert(e.message)
+        
+    //   }
+  
+    // }
+
+    useFocusEffect(
+
+      useCallback(()=>{
+  
+        getCartItems()
+  
+        
+      },[]),
+  
+    )
+
+  
 
 const Item = ({ item},index) => (
     <View style={styles.cartItemWrapper} onPress={()=>navigation.push('ProductInformation',{item})}>
@@ -50,7 +112,7 @@ const Item = ({ item},index) => (
           <View style={styles.cartItemMiddleSecondRowWrapper}>
             <Text style={styles.itemQuantityText}>{`Quantity ${item.quantity}`}</Text>
             <TouchableOpacity style={styles.itemButton}
-            onPress={()=>deleteItem(item.id)}>
+            onPress={()=>removeItem(item.id)}>
               <Text style={styles.itemButtonText}>Delete</Text>
             </TouchableOpacity>
           </View>
@@ -82,9 +144,9 @@ const ItemSeperatorView = ()=>{
 }
   return (
     <>
-    {data && 
+    {cartdata && 
     <FlatList
-        data={data}
+        data={cartdata}
         renderItem={renderItem}
         ItemSeparatorComponent={ItemSeperatorView}
         keyExtractor={(item) => item.id}

@@ -8,7 +8,7 @@ import GuestRoute from './Routes/GuestRoute';
 import UserRoute from './Routes/UserRoute';
 
 import {LoginContext} from './Contexts/LoginContext'
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import Database from './Database/Database';
 
 const RootStack = createNativeStackNavigator();
 const RootStackScreen = ({ userToken }) => (
@@ -41,13 +41,12 @@ export default function App() {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState(false);
 
-  const authState = async() =>{
+  const getAuthState = async() =>{
 
     try {
-      const user = await AsyncStorage.getItem('@user')
+      const user = await Database.getUserData('@user')
       if(user){
-        const userObject = JSON.parse(user)
-        setUser(userObject)
+        setUser(user)
         if (initializing) setInitializing(false);
         return
       }
@@ -62,12 +61,8 @@ export default function App() {
 
   useEffect(()=>{
 
-    authState()
+    getAuthState()
 
-  //  setTimeout(()=>{
-  //    if (initializing) setInitializing(false);
-  //    authState()
-  //  },2000)
 
   },[])
 

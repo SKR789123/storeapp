@@ -9,8 +9,7 @@ import StarRating from '../../../../Components/StarRating';
 import Slider from '@react-native-community/slider';
 import AppButton from '../../../../Components/AppButton';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Helpers from '../../../../Helpers/Helpers';
+import Database from '../../../../Database/Database';
 
 // const WIDTH = Dimensions.get('window').width;
 
@@ -25,9 +24,52 @@ const ProductInformation = ({navigation,route}) => {
 
 
 
-  const addToCart = async() =>{
-    try {
+  // const addToCart = async() =>{
+  //   try {
 
+  //     const data = {
+  //       id:item.id,
+  //       title:item.title,
+  //       quantity:quantity,
+  //       price:item.price*quantity,
+  //       thumbnail:item.thumbnail
+  //     }
+
+  //     let cartdata
+
+  //     const existingCart = await AsyncStorage.getItem('@cartdata')
+
+  //     if(existingCart){
+  //         let existingCartObject = JSON.parse(existingCart)
+  //         const itemExists = existingCartObject.filter(cartitem=>{
+  //           return cartitem.id == item.id
+  //         }).length
+          
+  //         if(itemExists){
+  //           Alert.alert('Item already exists in cart')
+  //           return;
+  //         }
+  //         existingCartObject.push(data)
+  //         cartdata =  JSON.stringify(existingCartObject)
+  //         await AsyncStorage.setItem('@cartdata', cartdata)
+  //         Alert.alert('Item added to existing cart')
+          
+  //     }
+  //     else{
+  //       cartdata =  JSON.stringify([data])
+  //       await AsyncStorage.setItem('@cartdata', cartdata)
+  //       Alert.alert('Item added to new cart')
+  //     }
+      
+      
+  //   } catch (e) {
+  //     console.log(e)
+  //   }
+  // }
+
+  const addItem = async() =>{
+
+    try{
       const data = {
         id:item.id,
         title:item.title,
@@ -36,58 +78,35 @@ const ProductInformation = ({navigation,route}) => {
         thumbnail:item.thumbnail
       }
 
-      let cartdata
-
-      const existingCart = await AsyncStorage.getItem('@cartdata')
-
-      if(existingCart){
-          let existingCartObject = JSON.parse(existingCart)
-          const itemExists = existingCartObject.filter(cartitem=>{
-            return cartitem.id == item.id
-          }).length
-          
-          if(itemExists){
-            Alert.alert('Item already exists in cart')
-            return;
-          }
-          existingCartObject.push(data)
-          cartdata =  JSON.stringify(existingCartObject)
-          await AsyncStorage.setItem('@cartdata', cartdata)
-          Alert.alert('Item added to existing cart')
-          
-      }
-      else{
-        cartdata =  JSON.stringify([data])
-        await AsyncStorage.setItem('@cartdata', cartdata)
-        Alert.alert('Item added to new cart')
-      }
-      
-      
-    } catch (e) {
-      console.log(e)
+      const addData = await Database.addToCart('@cartdata',data)
+      Alert.alert(addData)
     }
-  }
-
-  const getCartData = async () =>{
-
-    try {
-      const jsonValue = await AsyncStorage.getItem('@cartdata')
-      console.log(jsonValue)
-    } catch(e) {
-      console.log(e)
+    catch(err){
+      Alert.alert(err.message)
     }
 
   }
 
+  // const getCartData = async () =>{
 
-  const deleteCart = async() =>{
-    try {
-      const jsonValue = await AsyncStorage.removeItem('@cartdata')
-      console.log(jsonValue)
-    } catch(e) {
-      console.log(e)
-    }
-  }
+  //   try {
+  //     const jsonValue = await AsyncStorage.getItem('@cartdata')
+  //     console.log(jsonValue)
+  //   } catch(e) {
+  //     console.log(e)
+  //   }
+
+  // }
+
+
+  // const deleteCart = async() =>{
+  //   try {
+  //     const jsonValue = await AsyncStorage.removeItem('@cartdata')
+  //     console.log(jsonValue)
+  //   } catch(e) {
+  //     console.log(e)
+  //   }
+  // }
 
   return (
     <View style={styles.container}>
@@ -142,14 +161,14 @@ const ProductInformation = ({navigation,route}) => {
           <View style={styles.pageButtonWrapper}>
 
           <AppButton title={`Add to Cart (${quantity})`} 
-          action={addToCart} 
+          action={addItem} 
           />
-          <AppButton title={`Delete Cart (${quantity})`} 
+          {/* <AppButton title={`Delete Cart (${quantity})`} 
           action={deleteCart} 
           />
           <AppButton title={`Get Data `} 
           action={getCartData} 
-          />
+          /> */}
           </View>
           
         </ScrollView>

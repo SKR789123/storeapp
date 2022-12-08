@@ -4,8 +4,7 @@ import React,{useContext,useState} from 'react'
 import AppButton from '../../../Components/AppButton'
 import AppTextInput from '../../../Components/AppTextInput'
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import Database from '../../../Database/Database';
 import { LoginContext } from '../../../Contexts/LoginContext'
 
 const LoginPage = () => {
@@ -30,7 +29,7 @@ const LoginPage = () => {
 
             const userData = await submitCredentials.json()
             const jsonValue = JSON.stringify(userData)
-            await AsyncStorage.setItem('@user', jsonValue)
+            const addUserData = await Database.setUserData('@user',jsonValue)
             setSubmitting(false)
             setUser(userData)
           } catch (e) {

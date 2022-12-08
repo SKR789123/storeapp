@@ -10,7 +10,7 @@ import Avatar from '../../../../Components/Avatar'
 import UserInfoItem from '../../../../Components/UserInfoItem'
 import AppButton from '../../../../Components/AppButton'
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import Database from '../../../../Database/Database'
 
 const Profile = () => {
 
@@ -68,8 +68,7 @@ const Profile = () => {
   const Logout = async() => {
 
     try {
-      const deleteUser = await AsyncStorage.removeItem('@user')
-      const deleteCart = await AsyncStorage.removeItem('@cartdata')
+      const deleteUserData = await Database.removeCurrentUserData('@user','@cartdata')
       setUser(null)
 
     } catch(e) {
