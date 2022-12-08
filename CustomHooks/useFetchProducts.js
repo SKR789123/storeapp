@@ -7,13 +7,24 @@ const useFetchProducts = (url) => {
 
   useEffect(() => {
 
+    let mounted = true
 
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        setData(data.products)
-        setTotal(data.total)
+
+        if(mounted){
+          setData(data.products)
+          setTotal(data.total)
+        }
+        
       });
+
+      return cleanup = ()=>{
+        mounted=false
+      }
+
+
   }, [url]);
 
   return [data,total];

@@ -9,10 +9,14 @@ const useFetchUser = (url) => {
 
   useEffect(() => {
 
+    let mounted = true
+
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        setData(data)
+        
+        if(mounted){
+          setData(data)
         //creating a userinformation object to easily render on by mapping on product page
         const userDataObject = [
           {
@@ -60,10 +64,13 @@ const useFetchUser = (url) => {
         ]
   
         setUserdata(userDataObject)
+        }
 
       });
 
-      
+      return cleanup = ()=>{
+        mounted=false
+      }
       
 
   }, [url]);
