@@ -1,4 +1,4 @@
-import { View, Text,StyleSheet, ActivityIndicator } from 'react-native'
+import { View, Text,StyleSheet, ActivityIndicator, Alert } from 'react-native'
 import React,{useContext} from 'react'
 
 import { LoginContext } from '../../../../Contexts/LoginContext'
@@ -28,7 +28,7 @@ const Profile = () => {
       setUser(null)
 
     } catch(e) {
-      // error reading value
+      Alert.alert(e.message)
     }
 
   }
